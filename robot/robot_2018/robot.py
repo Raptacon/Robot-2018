@@ -28,10 +28,10 @@ class MyRobot(commandbased.CommandBasedRobot):
         
     def testInit(self):
         print("testInit started")
+        self.loader.toggleLoader()
         self.loader.testLoader()
-        
         print("testInit Done")
-   
+        
                 
         
 import sys       

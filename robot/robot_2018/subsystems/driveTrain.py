@@ -16,7 +16,7 @@ class DriveTrain(Subsystem):
         for name in map.CAN.driveMotors:
             motor=map.CAN.driveMotors[name]
             motors[name]=ctre.wpi_talonsrx.WPI_TalonSRX(motor['channel'])
-            motors[name].setInverted(motor['inverted'])
+            #motors[name].setInverted(motor['inverted'])
         
         self.drive = MecanumDrive(motors['frontLeftMotor'],motors['rearLeftMotor'],motors['frontRightMotor'],motors['rearRightMotor']) 
 
