@@ -13,7 +13,7 @@ class Loader(Subsystem):
         self.loaderSolenoid = DoubleSolenoid(pneumatics.pcmCAN, pneumatics.loader_open, pneumatics.loader_close)
         #intialization: close the loader so we know where it begins at. 
         self.currentState=initialState
-        self.setState(initialState)
+        self.setLoader(initialState)
     def toggleLoader(self):
         #if claw is closed then open
         if self.currentState==self.State.kOpen:
