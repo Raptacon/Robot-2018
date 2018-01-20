@@ -24,15 +24,16 @@ class CANMap():
         
 class ControllerMap():
     def __init__(self):
-        self.controller1=wpilib.Joystick(0)
-        self.controller2=wpilib.Joystick(1)
-        
-        self.controller1.setXChannel(0)
-        self.controller1.setYChannel(1)
-        self.controller1.setZChannel(4)
-        self.controller1.setTwistChannel(5)
-        
-        self.controller1.setThrottleChannel(3)
+        print("Initializing Controller")
+#        self.controller1=wpilib.Joystick(0)
+#        #self.controller2=wpilib.Joystick(1)
+#        
+#        self.controller1.setXChannel(1)
+#        self.controller1.setYChannel(2)
+#        self.controller1.setZChannel(4)
+#        self.controller1.setTwistChannel(5)
+#        
+#        self.controller1.setThrottleChannel(3)
 
 class Pneumatics():
     def __init__(self):
