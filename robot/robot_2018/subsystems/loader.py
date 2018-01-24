@@ -1,6 +1,6 @@
 import wpilib
 import subsystems
-from robotMap import robotMap
+import robotMap
 from wpilib import DoubleSolenoid
 from wpilib.command.subsystem import Subsystem
 import enum
@@ -8,7 +8,7 @@ class Loader(Subsystem):
     def __init__(self, initialState = 0):
        #Loader.State.kClose
         super().__init__('loader subsystem')
-        pneumatics = robotMap.pneumatics
+        pneumatics = wpilib.command.Command.getRobot().robotMap.pneumatics
        
         self.loaderSolenoid = DoubleSolenoid(pneumatics.pcmCAN, pneumatics.loader_open, pneumatics.loader_close)
         #intialization: close the loader so we know where it begins at. 

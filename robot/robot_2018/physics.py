@@ -35,12 +35,12 @@ class PhysicsEngine(object):
         # -> Remember, in the constructor we inverted the left motors, so
         #    invert the motor values here too!
         try: 
-            lr_motor = hal_data['CAN'][3]['value']
-            rr_motor = -hal_data['CAN'][2]['value']
-            lf_motor = hal_data['CAN'][1]['value']
-            rf_motor = -hal_data['CAN'][0]['value']
+            l_motor = hal_data['CAN'][0]['value']
+            r_motor = -hal_data['CAN'][1]['value']
         except:
-            lr_motor = rr_motor = lf_motor = rf_motor = 0
-        vx, vy, vw = drivetrains.mecanum_drivetrain(lr_motor, rr_motor, lf_motor, rf_motor,speed = 0.01)
-        self.physics_controller.vector_drive(vx, vy, vw, tm_diff)
+            l_motor = r_motor = 0
+            print("motor error")
+        speed,rot = drivetrains.two_motor_drivetrain(l_motor,r_motor)
+        #.mecanum_drivetrain(lr_motor, rr_motor, lf_motor, rf_motor,speed = 0.01)
+        self.physics_controller.drive(speed,rot, tm_diff)
 
