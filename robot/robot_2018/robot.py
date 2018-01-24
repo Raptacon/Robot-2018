@@ -87,11 +87,14 @@ class MyRobot(commandbased.CommandBasedRobot):
         
         
 #import sys       
-#def exit(retval):
-#    pass
+def exit(retval):
+    pass
 #    sys.exit(retval)
 
 if __name__ == '__main__':
-    #wpilib._impl.main.exit = exit
+    try:
+        print(wpilib._impl.main.exit)
+    except:
+        wpilib._impl.main.exit = exit
     wpilib.run(MyRobot,physics_enabled=True)
 
