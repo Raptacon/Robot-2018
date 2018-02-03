@@ -8,33 +8,34 @@ import wpilib
 from wpilib import RobotDrive
 import robotMap
 import ctre
-
+import commands
 import commandbased
 import subsystems 
 from wpilib.command import Command
+from networktables import NetworkTables
+import motorHelper
 
 #from commands import autonomous
 #from commands import followjoystick
 
+
+
+
 class MyRobot(commandbased.CommandBasedRobot):
     
     def robotInit(self):
-        self.robotMap = robotMap.RobotMap()
-        self.createControllers()
-        
-        #make robot avaiable to commands
         Command.getRobot = lambda x = 0: self
-         
+        self.motorHelper = motorHelper
+        self.robotMap = robotMap.RobotMap()
+        self.createNetworkTables()
+        self.createControllers()
         self.drivetrain = subsystems.driveTrain.DriveTrain()
         self.loader = subsystems.loader.Loader()
         self.timer = wpilib.Timer()
-        self.controller1=wpilib.Joystick(0)
-        self.controller1.setXChannel(0)
-        self.controller1.setYChannel(1)
-        self.controller1.setZChannel(4)
-        self.controller1.setTwistChannel(5)
-        
-        self.controller1.setThrottleChannel(3)
+        self.loaderButton = wpilib.buttons.JoystickButton(self.driveController, self.robotMap.controllerMap.driveController['loaderToggleButton'])
+        self.loaderButton.whenPressed(commands.loaderCommand.LoaderToggle())
+        #make robot avaiable to commands
+        wpilib.CameraServer.launch('vision.py:main')
         
         
     def teleopInit(self):
@@ -49,16 +50,28 @@ class MyRobot(commandbased.CommandBasedRobot):
         
     def autonomousPeriodic(self):
         """This function is called periodically during autonomous."""
-        wpilib.Timer.delay(5)
-        print("periodic tick")
+        self.smartDashboard.putNumber("timer",self.timer.get())
+        t=self.timer.get()
+        if t <10.0:
+            self.drivetrain.move(0,-.5)
+        elif t<12.0:
+            self.drivetrain.move(.5,0)
+        elif t<15:
+            self.drivetrain.move(0,.5)
+        else:
+            self.drivetrain.move(0,0)
         # Drive for two seconds
         #if self.timer.get() < 2.0:
            # self.drive.arcadeDrive(-0.5, 0)  # Drive forwards at half speed
         #else:
             #self.drive.arcadeDrive(0, 0)  # Stop robot
+    
     def autoInit(self):
         print("auto init")
-        
+        self.timer.reset()
+        self.timer.start()
+        print("second test here")
+        #self.autonomous.start
         
     def testInit(self):
         print("testInit started")
@@ -79,11 +92,17 @@ class MyRobot(commandbased.CommandBasedRobot):
         
         self.driveController.setXChannel(driveController['xAxis'])
         self.driveController.setYChannel(driveController['yAxis'])
-        self.driveController.setZChannel(driveController['zAxis'])
+        #self.driveController.setZChannel(driveController['zAxis'])
         self.driveController.setTwistChannel(driveController['twistAxis'])
-        
         self.driveController.setThrottleChannel(driveController['throttleAxis'])
         
+    def createNetworkTables(self):
+        NetworkTables.initialize(server = "roborio-3200-frc.local")
+        self.smartDashboard = NetworkTables.getTable("SmartDashboard")
+        self.smartDashboard.putNumber("raptacon",3200)
+        
+        
+    
         
         
 #import sys       

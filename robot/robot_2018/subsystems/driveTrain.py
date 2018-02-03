@@ -3,9 +3,8 @@ import wpilib
 from wpilib.command.subsystem import Subsystem 
 from wpilib.drive import DifferentialDrive
 #from wpilib.drive.mechanumDrive import MecanumDrive
-
-import ctre 
 import commands
+
 
 class DriveTrain(Subsystem):
     def __init__(self):
@@ -15,16 +14,12 @@ class DriveTrain(Subsystem):
         #create motors here
         motors={} 
         for name in map.CAN.driveMotors:
-            motor=map.CAN.driveMotors[name]
-            motors[name]=ctre.wpi_talonsrx.WPI_TalonSRX(motor['channel'])
-            #motors[name]=ctre.wpi_talonsrx.WPI_TalonSRX(motor['channel'])
-            #motors[name] = wpilib.PWMSpeedController(motor['channel'])
-            motors[name].setInverted(motor['inverted'])
+            motors[name] = wpilib.command.Command.getRobot().motorHelper.createMotor(map.CAN.driveMotors[name])
         
-        self.drive = DifferentialDrive(motors['frontLeftMotor'],motors['frontRightMotor']) 
+        self.drive = DifferentialDrive(motors['leftMotor'],motors['rightMotor'])
 
-    def move (self,x,y,rot):
-        self.drive.arcadeDrive(x,y)    
-    
+    def move (self,rot,spd):
+        self.drive.arcadeDrive(rot,spd)    
+        
     def initDefaultCommand(self):
         self.setDefaultCommand(commands.driveControlled.DriveControlled())

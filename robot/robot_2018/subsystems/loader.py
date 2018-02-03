@@ -9,7 +9,6 @@ class Loader(Subsystem):
        #Loader.State.kClose
         super().__init__('loader subsystem')
         pneumatics = wpilib.command.Command.getRobot().robotMap.pneumatics
-       
         self.loaderSolenoid = DoubleSolenoid(pneumatics.pcmCAN, pneumatics.loader_open, pneumatics.loader_close)
         #intialization: close the loader so we know where it begins at. 
         self.currentState=initialState
@@ -23,6 +22,7 @@ class Loader(Subsystem):
         else:
             loaderState = self.State.kOpen
         self.setLoader(loaderState)
+        #self.getRobot().smartDashboard.putNumber("Loader Closed", loaderState)
         
     def testLoader(self):
         self.setLoader(self.State.kOpen)

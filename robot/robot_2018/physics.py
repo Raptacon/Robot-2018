@@ -38,7 +38,7 @@ class PhysicsEngine(object):
             l_motor = hal_data['CAN'][0]['value']
             r_motor = -hal_data['CAN'][1]['value']
             speed,rot = drivetrains.two_motor_drivetrain(l_motor,r_motor)
-            self.physics_controller.drive(speed,rot, tm_diff)
+            self.physics_controller.drive(speed,-rot, tm_diff)
         except:
             l_motor = r_motor = 0
             print("motor error")

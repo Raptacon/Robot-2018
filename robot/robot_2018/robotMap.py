@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import wpilib
-
+import wpilib.buttons
 
 
 class RobotMap():
@@ -13,10 +13,12 @@ class RobotMap():
 class CANMap():
     def __init__(self):
         motors = {}
-        motors['frontRightMotor'] = {'channel':0, 'inverted':True, 'type':'CANTalon'}
-        motors['frontLeftMotor']  = {'channel':1, 'inverted':False, 'type':'CANTalon'}
-        #motors['rearRightMotor']  = {'channel':2, 'inverted':True, 'type':'CANTalon'}
-        #motors['rearLeftMotor']   = {'channel':3, 'inverted':False, 'type':'CANTalon'}
+        motors['leftMotor'] = {'channel':1, 'inverted':False, 'type':'CANTalon'}
+        motors['leftFollower']  = {'channel':2, 'inverted':False, 'type':'CANTalonFollower', 'masterChannel':1}
+        motors['rightMotor'] = {'channel':0, 'inverted':True, 'type':'CANTalon'}
+        motors['rightFollower']  = {'channel':3, 'inverted':True, 'type':'CANTalonFollower', 'masterChannel':0}
+
+        
         self.driveMotors = motors
         #add shooter motors to shooter.Motors
         
@@ -31,8 +33,9 @@ class ControllerMap():
         driveController['zAxis'] = 4
         driveController['twistAxis'] = 5
         driveController['throttleAxis'] = 3
+        driveController['loaderToggleButton']= 1
         self.driveController = driveController
-
+        
 class Pneumatics():
     def __init__(self):
         self.pcmCAN = 1
