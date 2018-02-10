@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import wpilib
 from wpilib import command
+from wpilib import Encoder
 
 class DriveControlled(command.Command):
     def __init__(self):
@@ -20,11 +21,11 @@ class DriveControlled(command.Command):
         
         '''Joystick Values on NetworkTables'''
         
-        rotspeed=controller.getX()
-        if (abs(controller.getX())<=deadZone):
-            rotspeed=0
-        spdspeed=controller.getY()
+        rotspeed=controller.getY()
         if (abs(controller.getY())<=deadZone):
+            rotspeed=0
+        spdspeed=controller.getX()
+        if (abs(controller.getX())<=deadZone):
             spdspeed=0
         #rotspeed=controller.getZ()
        # if (abs(controller.getX())<deadZone):
@@ -33,9 +34,16 @@ class DriveControlled(command.Command):
         rot=rotscale*rotspeed
         spd=spdscale*spdspeed
        # rot=rotscale*rotspeed
-        self.getRobot().drivetrain.move(rot,spd)
+        self.getRobot().drivetrain.move(spd,rot)
         self.getRobot().smartDashboard.putNumber("Joystick-rot", rot)
         self.getRobot().smartDashboard.putNumber("Joystick-Y", spd)
+ 
+        #create motors here
+        
+        #self.getRobot().smartDashboard.putNumber("EncoderVal", encv)
+        
+        
+        
        # self.getRobot().smartDashboard.putNumber("Joystick-Z", rot)
        
         

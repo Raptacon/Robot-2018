@@ -13,10 +13,10 @@ class RobotMap():
 class CANMap():
     def __init__(self):
         motors = {}
-        motors['leftMotor'] = {'channel':1, 'inverted':False, 'type':'CANTalon'}
-        motors['leftFollower']  = {'channel':2, 'inverted':False, 'type':'CANTalonFollower', 'masterChannel':1}
-        motors['rightMotor'] = {'channel':0, 'inverted':True, 'type':'CANTalon'}
-        motors['rightFollower']  = {'channel':3, 'inverted':True, 'type':'CANTalonFollower', 'masterChannel':0}
+        motors['leftMotor'] = {'channel':1, 'inverted': True, 'type':'CANTalon'}
+        motors['leftFollower']  = {'channel':2, 'inverted':True, 'type':'CANTalonFollower', 'masterChannel':1, 'talonPid':True}
+        motors['rightMotor'] = {'channel':0, 'inverted': False, 'type':'CANTalon'}
+        motors['rightFollower']  = {'channel':3, 'inverted':False, 'type':'CANTalonFollower', 'masterChannel':0,'talonPid':True}
 
         
         self.driveMotors = motors

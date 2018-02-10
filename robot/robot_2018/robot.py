@@ -14,6 +14,7 @@ import subsystems
 from wpilib.command import Command
 from networktables import NetworkTables
 import motorHelper
+from wpilib import Encoder
 
 #from commands import autonomous
 #from commands import followjoystick
@@ -34,6 +35,7 @@ class MyRobot(commandbased.CommandBasedRobot):
         self.timer = wpilib.Timer()
         self.loaderButton = wpilib.buttons.JoystickButton(self.driveController, self.robotMap.controllerMap.driveController['loaderToggleButton'])
         self.loaderButton.whenPressed(commands.loaderCommand.LoaderToggle())
+        self.driveEncoder = Encoder(0,1)
         #make robot avaiable to commands
         wpilib.CameraServer.launch('vision.py:main')
         

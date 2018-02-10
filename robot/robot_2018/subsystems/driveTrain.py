@@ -2,6 +2,7 @@
 import wpilib
 from wpilib.command.subsystem import Subsystem 
 from wpilib.drive import DifferentialDrive
+
 #from wpilib.drive.mechanumDrive import MecanumDrive
 import commands
 
@@ -15,11 +16,15 @@ class DriveTrain(Subsystem):
         motors={} 
         for name in map.CAN.driveMotors:
             motors[name] = wpilib.command.Command.getRobot().motorHelper.createMotor(map.CAN.driveMotors[name])
-        
+        print(motors['leftMotor'].getSensorCollection())
+        self.motors = motors
         self.drive = DifferentialDrive(motors['leftMotor'],motors['rightMotor'])
 
-    def move (self,rot,spd):
-        self.drive.arcadeDrive(rot,spd)    
+
+    def move (self,spd,rot):
+        self.drive.arcadeDrive(spd,rot)
+        #print("Left Position: %f"%(self.motors['leftMotor'].getSelectedSensorPosition(0)))
+        #print("Right Position: %f"%(self.motors['rightMotor'].getSelectedSensorPosition(0)))
         
     def initDefaultCommand(self):
         self.setDefaultCommand(commands.driveControlled.DriveControlled())
