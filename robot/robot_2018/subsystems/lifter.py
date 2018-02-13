@@ -25,6 +25,4 @@ class Lifter(Subsystem):
         #print("Right Position: %f"%(self.motors['rightMotor'].getSelectedSensorPosition(0)))
         
     def initDefaultCommand(self):
-        pass
-        #self.setDefaultCommand(commands.driveControlled.DriveControlled())
-
+        self.setDefaultCommand(commands.lifterCommand.LifterCommand())

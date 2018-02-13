@@ -36,6 +36,7 @@ class MyRobot(commandbased.CommandBasedRobot):
         self.loaderButton = wpilib.buttons.JoystickButton(self.driveController, self.robotMap.controllerMap.driveController['loaderToggleButton'])
         self.loaderButton.whenPressed(commands.loaderCommand.LoaderToggle())
         self.driveEncoder = Encoder(0,1)
+        self.lifter=subsystems.lifter.Lifter()
         #make robot avaiable to commands
         wpilib.CameraServer.launch('vision.py:main')
         

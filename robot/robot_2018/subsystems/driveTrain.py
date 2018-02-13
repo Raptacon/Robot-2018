@@ -23,8 +23,8 @@ class DriveTrain(Subsystem):
 
     def move (self,spd,rot):
         self.drive.arcadeDrive(spd,rot)
-        #print("Left Position: %f"%(self.motors['leftMotor'].getSelectedSensorPosition(0)))
-        #print("Right Position: %f"%(self.motors['rightMotor'].getSelectedSensorPosition(0)))
+        print("Left Position: %f"%(self.motors['leftMotor'].getSelectedSensorPosition(0)))
+        print("Right Position: %f"%(self.motors['rightMotor'].getSelectedSensorPosition(0)))
         
     def initDefaultCommand(self):
         self.setDefaultCommand(commands.driveControlled.DriveControlled())

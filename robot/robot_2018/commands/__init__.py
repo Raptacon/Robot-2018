@@ -2,3 +2,4 @@
 
 from . import driveControlled
 from . import loaderCommand
+from . import lifterCommand

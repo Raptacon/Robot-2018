@@ -20,6 +20,10 @@ class CANMap():
 
         
         self.driveMotors = motors
+        motors={}
+        motors['lifterMotor'] = {'channel':4, 'inverted': False, 'type':'CANTalon'}
+        motors['lifterFollower']  = {'channel':5, 'inverted':False, 'type':'CANTalonFollower', 'masterChannel':4, 'talonPid':False}
+        self.lifterMotors=motors
         #add shooter motors to shooter.Motors
         
         
@@ -34,6 +38,8 @@ class ControllerMap():
         driveController['twistAxis'] = 5
         driveController['throttleAxis'] = 3
         driveController['loaderToggleButton']= 1
+        #driveController['lifterDownAxis']= 4
+        #driveController['lifterUpAxis']=5
         self.driveController = driveController
         
 class Pneumatics():
