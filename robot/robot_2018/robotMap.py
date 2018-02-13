@@ -38,8 +38,8 @@ class ControllerMap():
         driveController['twistAxis'] = 5
         driveController['throttleAxis'] = 3
         driveController['loaderToggleButton']= 1
-        #driveController['lifterDownAxis']= 4
-        #driveController['lifterUpAxis']=5
+        driveController['lifterDownAxis']= 4
+        driveController['lifterUpAxis']=2
         self.driveController = driveController
         
 class Pneumatics():
