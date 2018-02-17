@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import wpilib
 import wpilib.buttons
-
+import ctre
+from ctre import WPI_TalonSRX
 
 class RobotMap():
     def __init__(self):
@@ -12,10 +13,14 @@ class RobotMap():
         
 class CANMap():
     def __init__(self):
+        pid = None
         motors = {}
-        motors['leftMotor'] = {'channel':1, 'inverted': True, 'type':'CANTalon'}
-        motors['leftFollower']  = {'channel':2, 'inverted':True, 'type':'CANTalonFollower', 'masterChannel':1, 'talonPid':True}
-        motors['rightMotor'] = {'channel':0, 'inverted': False, 'type':'CANTalon'}
+        #pid = createPidVelDict(9000,0.0,0,0,WPI_TalonSRX.ControlMode.Velocity, ctre.FeedbackDevice.QuadEncoder, False)
+        motors['leftMotor'] = {'channel':1, 'inverted': True, 'type':'CANTalon', 'pid':pid}
+        
+        motors['leftFollower']  = {'channel':2, 'inverted':True, 'type':'CANTalonFollower', 'masterChannel':1}
+        #pid = createPidVelDict(9000,0.0,0,0,WPI_TalonSRX.ControlMode.Velocity, ctre.FeedbackDevice.QuadEncoder, False)
+        motors['rightMotor'] = {'channel':0, 'inverted': False, 'type':'CANTalon', 'pid':pid}
         motors['rightFollower']  = {'channel':3, 'inverted':False, 'type':'CANTalonFollower', 'masterChannel':0,'talonPid':True}
 
         
@@ -52,7 +57,13 @@ class Pneumatics():
         self.pcmCAN = 1
         self.loader_open = 1
         self.loader_close = 0
-            
+      
+        
+def createPidVelDict(_100msVelCount, kP, kI, kD, controlType, feedbackType, sensorPhase = False, kInput = None):
+    kF = 1023.0 / _100msVelCount
+    if not kInput:
+        kInput = _100msVelCount
+    return {'kF':kF, 'kP':kP, 'kI':kI, 'kD':kD, 'kInput':kInput, 'controlType':controlType, 'feedbackType':feedbackType, 'sensorPhase':False}
         
 #robotMap = RobotMap()
 #robotMap = None        
