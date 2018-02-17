@@ -95,7 +95,7 @@ class MyRobot(commandbased.CommandBasedRobot):
         
         self.driveController.setXChannel(driveController['xAxis'])
         self.driveController.setYChannel(driveController['yAxis'])
-        #self.driveController.setZChannel(driveController['zAxis'])
+        self.driveController.setZChannel(driveController['zAxis'])
         self.driveController.setTwistChannel(driveController['twistAxis'])
         self.driveController.setThrottleChannel(driveController['throttleAxis'])
         
