@@ -11,7 +11,9 @@ import ctre
 import commands
 import commandbased
 import subsystems 
+from wpilib import DriverStation
 from wpilib.command import Command
+import wpilib.command
 from networktables import NetworkTables
 import motorHelper
 from wpilib import Encoder
@@ -24,8 +26,13 @@ from wpilib import Encoder
 
 class MyRobot(commandbased.CommandBasedRobot):
     
+    kLeft = 0
+    kCenter = 1
+    kRight = 2
+    
     def robotInit(self):
         Command.getRobot = lambda x = 0: self
+        self.driverStation = DriverStation.getInstance()
         self.motorHelper = motorHelper
         self.robotMap = robotMap.RobotMap()
         self.createNetworkTables()
@@ -39,13 +46,18 @@ class MyRobot(commandbased.CommandBasedRobot):
         self.lifter=subsystems.lifter.Lifter()
         #make robot avaiable to commands
         wpilib.CameraServer.launch('vision.py:main')
-        
+        self.smartDashboard.putString('field position' ,"Enter L, R, or C")
         
     def teleopInit(self):
         print("initializing teleop drive")
         
     def autonomousInit(self):
         """This function is run once each time the robot enters autonomous mode."""
+        fieldState = self.driverStation.getGameSpecificMessage()
+        self.smartDashboard.putString("field state", fieldState)
+        fieldPosition = self.smartDashboard.getString("field position", "")
+        self.startingFieldPosition = self.parserobotFieldPosition(fieldPosition)
+        self.smartDashboard.putNumber("position", self.startingFieldPosition)
         self.timer.reset()
         self.timer.start()
         print("second test here")
@@ -104,8 +116,16 @@ class MyRobot(commandbased.CommandBasedRobot):
         self.smartDashboard = NetworkTables.getTable("SmartDashboard")
         self.smartDashboard.putNumber("raptacon",3200)
         
-        
-    
+    def parserobotFieldPosition(self, fieldPosition):
+        fieldPosition = fieldPosition.lower().strip()
+        if fieldPosition[0] == "l":
+            return self.kLeft
+        if fieldPosition[0] == "r":
+            return self.kRight
+        if fieldPosition[0] == "c":
+            return self.kCenter
+        print ("unable to read field position:",fieldPosition)
+        return self.kCenter
         
         
 #import sys       
@@ -119,4 +139,3 @@ if __name__ == '__main__':
     except:
         wpilib._impl.main.exit = exit
     wpilib.run(MyRobot,physics_enabled=True)
-
