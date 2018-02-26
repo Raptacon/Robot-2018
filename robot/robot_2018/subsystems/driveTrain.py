@@ -19,10 +19,10 @@ class DriveTrain(Subsystem):
         print(motors['leftMotor'].getSensorCollection())
         self.motors = motors
         self.drive = DifferentialDrive(motors['leftMotor'],motors['rightMotor'])
-
+        self.drive.setSafetyEnabled(False)
 
     def move (self,spd,rot):
-        self.drive.arcadeDrive(spd,rot)
+        self.drive.arcadeDrive(spd,rot,False)
         #print("Left Position: %f"%(self.motors['leftMotor'].getSelectedSensorPosition(0)))
         #print("Right Position: %f"%(self.motors['rightMotor'].getSelectedSensorPosition(0)))
         

@@ -16,16 +16,42 @@ class AutonomousProgram(CommandGroup):
     and then spins it in the opposite direction for two seconds.
     '''
 
-    def __init__(self):
+    def __init__(self, fieldState, robotLocation):
         super().__init__('Autonomous Program')
-
-        self.addSequential(MoveRobot(0.5,0, timeoutInSeconds=2))
-        self.addSequential(WaitCommand(timeout=1))
-        self.addSequential(MoveRobot(0.2,.3, timeoutInSeconds=1))
+        self.fieldState = fieldState
+        self.robotLocation = robotLocation
+        if self.getRobot().kCenter == fieldState:
+            print("Center Auto")
+            self.createCenterCommands(fieldState)
+        elif self.getRobot().kLeft == fieldState:
+            print("Left auto")
+            self.createLeftCommands()
+        else:
+            print("Right auto")
+            self.createRightCommands()
+        
+    def createCenterCommands(self):
+        self.addSequential(MoveRobot(.25,.5, timeoutInSeconds=1))
+        
+        self.addSequential(MoveRobot(0.7,0.0, timeoutInSeconds=1))
         self.addSequential(WaitCommand(timeout=0))
-        print("Robot auto created")
-        #self.addSequential(WaitCommand(timeout=1))
-        #self.addSequential(MoveRobot(.5,1.0, timeoutInSeconds=1))
+        
+    def creeateLeftCommands(self):
+        self.addSequential(MoveRobot(.75,0, timeoutInSeconds=1))
+        
+        #if robot on side as field, maybe raise lifter and drop box?
+
+    def createRightCommands(self):
+        self.addSequential(MoveRobot(.75,0, timeoutInSeconds=1))
+        
+        #if robot on side as field, maybe raise lifter and drop box?        
+        
+    def createDropBoxCommands(self):
+        #raise lifter
+        #delay
+        #drive forward
+        #open claw
+        pass
         
     def initialize(self):
         print("Cmmand group stard")

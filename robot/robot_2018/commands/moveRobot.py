@@ -24,7 +24,8 @@ class MoveRobot(Command):
         self.requires(Command.getRobot().drivetrain)
         print("Created timed command")
     def execute(self):
-        #print("Running")
+
+        #it seems like rot / magnitude is reversed, is this a bug in the robot lib sim?
         Command.getRobot().drivetrain.move(self.magnitude, self.rotation)
 
     def end(self):

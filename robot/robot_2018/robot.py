@@ -42,16 +42,18 @@ class MyRobot(commandbased.CommandBasedRobot):
         self.timer = wpilib.Timer()
         self.loaderButton = wpilib.buttons.JoystickButton(self.driveController, self.robotMap.controllerMap.driveController['loaderToggleButton'])
         self.loaderButton.whenPressed(commands.loaderCommand.LoaderToggle())
-        self.driveEncoder = Encoder(0,1)
+
         self.lifter=subsystems.lifter.Lifter()
         #make robot avaiable to commands
         wpilib.CameraServer.launch('vision.py:main')
         self.smartDashboard.putString('field position' ,"Enter L, R, or C")
         
+        
+        
     def teleopInit(self):
         print("initializing teleop drive")
         
-    def autonomousInit(self):
+    def autonomousInit(self):       
         """This function is run once each time the robot enters autonomous mode."""
         fieldState = self.driverStation.getGameSpecificMessage()
         self.smartDashboard.putString("field state", fieldState)
@@ -60,19 +62,33 @@ class MyRobot(commandbased.CommandBasedRobot):
         self.smartDashboard.putNumber("position", self.startingFieldPosition)
         self.timer.reset()
         self.timer.start()
-        print("second test here")
         
+        #todo change RRR to from fms, maybe parse it first
+        self.autonomousProgram = commands.autonomousCommand.AutonomousProgram("RRR", self.startingFieldPosition)
+        #self.autonomousProgram.start()
         
-    def autonomousPeriodic(self):
+    #remove this after command groups are used
+    def autonomousPeriodic1(self):
+        return
         """This function is called periodically during autonomous."""
         self.smartDashboard.putNumber("timer",self.timer.get())
         t=self.timer.get()
-        if t <10.0:
-            self.drivetrain.move(0,-.5)
-        elif t<12.0:
-            self.drivetrain.move(.5,0)
+        if self.startingFieldPosition == self.kLeft or self.startingFieldPosition == self.kRight:
+            if t <10.0:
+                self.drivetrain.move(0,-.5)
+            elif t<12.0:
+                self.drivetrain.move(0,-.5)
+            elif t<15:
+                self.drivetrain.move(0,0)
+            else:
+                self.drivetrain.move(0,0)
+        if self.startingFieldPosition == self.kCenter:
+            if t <5.0:
+                self.drivetrain.move(-.28,-.5)
+            elif t<9.0:
+                self.drivetrain.move(.15,-.5)
         elif t<15:
-            self.drivetrain.move(0,.5)
+            self.drivetrain.move(0,-.5)
         else:
             self.drivetrain.move(0,0)
         # Drive for two seconds
@@ -81,19 +97,12 @@ class MyRobot(commandbased.CommandBasedRobot):
         #else:
             #self.drive.arcadeDrive(0, 0)  # Stop robot
     
-    def autoInit(self):
-        print("auto init")
-        self.timer.reset()
-        self.timer.start()
-        print("second test here")
-        #self.autonomous.start
-        
     def testInit(self):
-        print("testInit started")
+        '''print("testInit started")
         self.loader.toggleLoader()
         self.loader.testLoader()
-        print("testInit Done")
-        
+        print("testInit Done")'''
+        pass
                 
         
     def createControllers(self):
