@@ -1,0 +1,65 @@
+1. Make sure that the computer's robotpy is up to date with the overall download:
+py -m pip install --upgrade robotpy-ctre pyfrc
+(this should get everything up to date including wpilib. The one issue with this would be 
+that pip will be updated sometime so that will not work. On another hand, if you are not able
+to upgrade robotpy onto the C drive, use this:)
+py -m pip install --user --upgrade robotpy-ctre pyfrc
+(This can be opened and downloaded without any given folder needed)
+
+2. Downloading and updating code onto the robot:
+open powershell with the py installer file by pressing shift+RClick (make sure that you have 
+py installer in the first place) 
+py -m robotpy_installer download-opkg python36-robotpy-ctre (download on computer)
+py -m robotpy_installer install-opkg python36-robotpy-ctre (upgrade onto roborio)
+and/or
+py -m robotpy_installer download-robotpy
+py -m robotpy_installer install-robotpy
+
+3. Making sure that the radio is up to date: 
+Assure that you have the radio configuration tool
+make sure that you have a connection to the outermost ethernet cord connected to your computer
+(this wil be titled 802.3af as it says in the directions within the config tool) 
+(Just follow the directions really)
+
+4. During competition make sure that the radio is configured for the competition 
+(Bring it up to the main table as they will set the computer up to control during autonomous)
+They will also most likely give us a sheet titling us to turn off the wifi and bluetooth connections
+only leaving the ethernet (that will be connected during matches) to be connected
+
+5. Launching the robot:
+Super easy! 
+Open a powershell window in the most recent robot code (steps to open powershell window is in #2)
+type in py robot.py deploy
+(if you are looking for errors type in):
+py robot.py deploy --nc
+
+6. Opening SmartDashboard:
+go to the smartDashboard folder in downloads and open a powershell window and then type in:
+java -jar smartDashboard.jar
+
+(this can be used to change the speeds of the robot so that we don't break the bot in some
+scenarios)
+PLEASE NOTE THAT THE REST OF THESE ARE FOR POTENTIAL ERRORS AND ARE MOST LIKELY UP TO DATE
+
+7. Checking to make sure that there is no error with the electronics:
+connect with the robot's wifi or connect with ethernet (turning off wifi if ethernet)
+open internet explorer
+type in: 
+(I have yet to remember this, but will change it asap) 
+If there is anything missing that is being powered make sure to show a head of electronics
+
+8. Checking the once a year upgrades:
+Make sure that each talon is up to date and upgrade with the most recent talon SRX file available
+(the most recent is 3.3)
+
+Check that the roborio imaging tool is up to date. This should just be a basic download. 
+The most recent is v16
+
+A FINAL NOTE:
+I MAY HAVE FORGOTTEN SOMETHING AND I WILL CHANGE THIS AS NEEDED. THESE ARE JUST THE BASIC
+THINGS TO CHECK IF ERRORS ARE MADE (THAT ARE NOT DUE TO THE CODE) 
+
+
+
+
+
