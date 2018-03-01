@@ -35,3 +35,26 @@ class LifterCommand(command.Command):
         if (downSpeed>=deadZone):
             return -downSpeed*spdscale
         return 0 
+
+
+
+class LifterCommandTimed(command.Command):
+    def __init__(self, speed, timeoutInSeconds):
+        super().__init__('LifterTimedCommand%f, %f'%(speed,timeoutInSeconds),timeoutInSeconds)
+        self.speed = speed
+        self.requires(self.getRobot().lifter)
+        
+    def execute(self):
+        self.getRobot().lifter.move(self.speed)
+        self.getRobot().smartDashboard.putNumber("lifterSpeed", self.speed)
+        
+    
+    def end(self):
+        #print("done")
+        self.getRobot().lifter.move(0)
+    
+    def isFinished(self):
+        """Ends command when timed out."""
+        return self.isTimedOut()
+        
+        

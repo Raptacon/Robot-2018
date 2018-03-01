@@ -22,6 +22,7 @@ class DriveTrain(Subsystem):
         self.drive.setSafetyEnabled(False)
 
     def move (self,spd,rot):
+        #print("Spd" ,spd, "rot", rot)
         self.drive.arcadeDrive(spd,rot,False)
         #print("Left Position: %f"%(self.motors['leftMotor'].getSelectedSensorPosition(0)))
         #print("Right Position: %f"%(self.motors['rightMotor'].getSelectedSensorPosition(0)))

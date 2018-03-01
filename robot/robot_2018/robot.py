@@ -56,46 +56,20 @@ class MyRobot(commandbased.CommandBasedRobot):
     def autonomousInit(self):       
         """This function is run once each time the robot enters autonomous mode."""
         fieldState = self.driverStation.getGameSpecificMessage()
+        self.fieldState = fieldState
         self.smartDashboard.putString("field state", fieldState)
         fieldPosition = self.smartDashboard.getString("field position", "")
         self.startingFieldPosition = self.parserobotFieldPosition(fieldPosition)
         self.smartDashboard.putNumber("position", self.startingFieldPosition)
-        self.timer.reset()
-        self.timer.start()
+    
+        #convert field states to our enum values    
+        self.ourSwitchSide = self.parserobotFieldPosition(self.fieldState[0])
+        self.scaleSide = self.parserobotFieldPosition(self.fieldState[1])
+        self.theirSwitchSide = self.parserobotFieldPosition(self.fieldState[2])
         
         #todo change RRR to from fms, maybe parse it first
-        self.autonomousProgram = commands.autonomousCommand.AutonomousProgram("RRR", self.startingFieldPosition)
-        #self.autonomousProgram.start()
-        
-    #remove this after command groups are used
-    def autonomousPeriodic1(self):
-        return
-        """This function is called periodically during autonomous."""
-        self.smartDashboard.putNumber("timer",self.timer.get())
-        t=self.timer.get()
-        if self.startingFieldPosition == self.kLeft or self.startingFieldPosition == self.kRight:
-            if t <10.0:
-                self.drivetrain.move(0,-.5)
-            elif t<12.0:
-                self.drivetrain.move(0,-.5)
-            elif t<15:
-                self.drivetrain.move(0,0)
-            else:
-                self.drivetrain.move(0,0)
-        if self.startingFieldPosition == self.kCenter:
-            if t <5.0:
-                self.drivetrain.move(-.28,-.5)
-            elif t<9.0:
-                self.drivetrain.move(.15,-.5)
-        elif t<15:
-            self.drivetrain.move(0,-.5)
-        else:
-            self.drivetrain.move(0,0)
-        # Drive for two seconds
-        #if self.timer.get() < 2.0:
-           # self.drive.arcadeDrive(-0.5, 0)  # Drive forwards at half speed
-        #else:
-            #self.drive.arcadeDrive(0, 0)  # Stop robot
+        self.autonomousProgram = commands.autonomousCommand.AutonomousProgram(self.startingFieldPosition)
+        self.autonomousProgram.start()
     
     def testInit(self):
         '''print("testInit started")
@@ -133,7 +107,7 @@ class MyRobot(commandbased.CommandBasedRobot):
             return self.kRight
         if fieldPosition[0] == "c":
             return self.kCenter
-        print ("unable to read field position:",fieldPosition)
+        print ("unable to read field position:",fieldPosition, "Using default kCenter")
         return self.kCenter
         
         
