@@ -23,7 +23,18 @@ def createMotor(motorDescp):
     elif motorDescp['type'] == 'CANTalonFollower':
         motor =ctre.wpi_talonsrx.WPI_TalonSRX(motorDescp['channel'])
         motor.setInverted(motorDescp['inverted'])
+        
         motor.set(ctre.wpi_talonsrx.ControlMode.Follower, motorDescp['masterChannel'])
+        
+    if 'currentLimits' in motorDescp:
+        currentLimits = motorDescp['currentLimits']
+        absMax = currentLimits['absMax']
+        absMaxTimeMs = currentLimits['absMaxTimeMs']
+        nominalMaxCurrent = currentLimits['maxNominal']
+        motor.configPeakCurrentLimit(absMax,10)
+        motor.configPeakCurrentDuration(absMaxTimeMs,10)
+        motor.configContinuousCurrentLimit(nominalMaxCurrent,10)
+        motor.enableCurrentLimit(True)
         
     else:
         print("Unknown Motor")

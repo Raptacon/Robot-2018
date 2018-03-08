@@ -29,7 +29,7 @@ class MyRobot(commandbased.CommandBasedRobot):
     kLeft = 0
     kCenter = 1
     kRight = 2
-    
+    kNothing=4
     def robotInit(self):
         Command.getRobot = lambda x = 0: self
         self.driverStation = DriverStation.getInstance()
@@ -40,13 +40,15 @@ class MyRobot(commandbased.CommandBasedRobot):
         self.drivetrain = subsystems.driveTrain.DriveTrain()
         self.loader = subsystems.loader.Loader()
         self.timer = wpilib.Timer()
-        self.loaderButton = wpilib.buttons.JoystickButton(self.driveController, self.robotMap.controllerMap.driveController['loaderToggleButton'])
+        self.loaderButton = wpilib.buttons.JoystickButton(self.auxController, self.robotMap.controllerMap.auxController['loaderToggleButton'])
         self.loaderButton.whenPressed(commands.loaderCommand.LoaderToggle())
 
+        self.pdp = wpilib.PowerDistributionPanel()
+        self.healthMonitor = subsystems.driveTrain.HealthMonitor()
         self.lifter=subsystems.lifter.Lifter()
         #make robot avaiable to commands
         wpilib.CameraServer.launch('vision.py:main')
-        self.smartDashboard.putString('field position' ,"Enter L, R, or C")
+        self.smartDashboard.putString('field position' ,"Enter L, R, or C,N")
         
         
         
@@ -66,7 +68,9 @@ class MyRobot(commandbased.CommandBasedRobot):
         self.ourSwitchSide = self.parserobotFieldPosition(self.fieldState[0])
         self.scaleSide = self.parserobotFieldPosition(self.fieldState[1])
         self.theirSwitchSide = self.parserobotFieldPosition(self.fieldState[2])
-        
+        if self.startingFieldPosition==self.kNothing:
+            print("No field position set. Aborting")
+            return 
         #todo change RRR to from fms, maybe parse it first
         self.autonomousProgram = commands.autonomousCommand.AutonomousProgram(self.startingFieldPosition)
         self.autonomousProgram.start()
@@ -85,14 +89,14 @@ class MyRobot(commandbased.CommandBasedRobot):
         '''
         controllerMap = self.robotMap.controllerMap
         driveController = controllerMap.driveController
-        
+        auxControllerMap = controllerMap.auxController
         self.driveController=wpilib.Joystick(driveController['controllerId'])
-        
+        self.auxController=wpilib.Joystick(auxControllerMap['controllerId'])
         self.driveController.setXChannel(driveController['xAxis'])
         self.driveController.setYChannel(driveController['yAxis'])
-        self.driveController.setZChannel(driveController['zAxis'])
-        self.driveController.setTwistChannel(driveController['twistAxis'])
-        self.driveController.setThrottleChannel(driveController['throttleAxis'])
+     #   self.driveController.setZChannel(driveController['zAxis'])
+     #   self.driveController.setTwistChannel(driveController['twistAxis'])
+     #  self.driveController.setThrottleChannel(driveController['throttleAxis'])
         
     def createNetworkTables(self):
         NetworkTables.initialize(server = "roborio-3200-frc.local")
@@ -107,8 +111,9 @@ class MyRobot(commandbased.CommandBasedRobot):
             return self.kRight
         if fieldPosition[0] == "c":
             return self.kCenter
-        print ("unable to read field position:",fieldPosition, "Using default kCenter")
-        return self.kCenter
+        
+        print ("unable to read field position:",fieldPosition, "Using default kNothing")
+        return self.kNothing
         
         
 #import sys       

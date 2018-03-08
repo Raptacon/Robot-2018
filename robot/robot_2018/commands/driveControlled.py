@@ -49,7 +49,13 @@ class DriveControlled(command.Command):
      
        
         
+       
+class CurrentMonitor(command.Command):
+    def __init__(self):
+        super().__init__("CurrentMonitorCmd")
         
-            
+        self.requires(self.getRobot().healthMonitor)
+    def execute(self):
+        self.getRobot().healthMonitor.rumbleOnLimits()
        
         

@@ -26,7 +26,7 @@ class MoveRobot(Command):
     def execute(self):
 
         #it seems like rot / magnitude is reversed, is this a bug in the robot lib sim?
-        Command.getRobot().drivetrain.move(self.magnitude, self.rotation)
+        Command.getRobot().drivetrain.move(self.rotation, -self.magnitude)
 
     def end(self):
         #print("done")

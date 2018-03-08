@@ -32,10 +32,7 @@ class AutonomousProgram(CommandGroup):
             self.createRightCommands()
         
     def createCenterCommands(self):
-        self.addSequential(MoveRobot(0,.25, timeoutInSeconds=.5))
-        
-        self.addSequential(MoveRobot(0.7,0.0, timeoutInSeconds=5))
-        self.addSequential(WaitCommand(timeout=5))
+        self.addParallel(MoveRobot(.5,0, timeoutInSeconds=2.75))
         
         
     def createLeftCommands(self):
@@ -50,14 +47,20 @@ class AutonomousProgram(CommandGroup):
         
     def createSideCommands(self):
         #move robot
-        self.addParallel(MoveRobot(.75,0, timeoutInSeconds=5))
+        self.addSequential(LoaderToggle())
+        self.addSequential(WaitCommand(0.5))
+        self.addSequential(LifterCommandTimed(0.5, timeoutInSeconds = 3))
+        self.addSequential(LifterCommandTimed(0.25, timeoutInSeconds = 1))
+        self.addParallel(LifterCommandTimed(0.25, timeoutInSeconds = 10))
+        self.addParallel(MoveRobot(.5,0, timeoutInSeconds=2.75))
+        
         #AND lift lifter
-        self.addParallel(LifterCommandTimed(0.5, timeoutInSeconds = 3))
+        
         #sync commands
-        #self.addSequential(MoveRobot(0,0, timeoutInSeconds = 0))
+        #elf.addSequential(MoveRobot(0,0, timeoutInSeconds = 0))
         #self.addSequential(LifterCommandTimed(0, timeoutInSeconds = 0))
         #let robot stablize
-        self.addSequential(WaitCommand(6.0))
+        self.addSequential(WaitCommand(5.0))
         
         self.createDropBoxCommands()
         
@@ -73,7 +76,7 @@ class AutonomousProgram(CommandGroup):
             print("Robot on wrong side. Not dropping box")
         self.addSequential(WaitCommand(1.0))
         
-        
+       # toggleDropBox=self.getRobot().smartDashboard.getNumber("toggleDropBox", 1)
     def initialize(self):
         print("Cmmand group stard")
         

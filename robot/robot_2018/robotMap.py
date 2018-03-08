@@ -16,6 +16,9 @@ class CANMap():
         pid = None
         motors = {}
         #pid = createPidVelDict(9000,0.0,0,0,WPI_TalonSRX.ControlMode.Velocity, ctre.FeedbackDevice.QuadEncoder, False)
+        motors={}
+        currentLimits = {'absMax':75, 'absMaxTimeMs':100, 'maxNominal':40 }
+        
         motors['leftMotor'] = {'channel':1, 'inverted': True, 'type':'CANTalon', 'pid':pid}
         
         motors['leftFollower']  = {'channel':2, 'inverted':True, 'type':'CANTalonFollower', 'masterChannel':1}
@@ -23,12 +26,16 @@ class CANMap():
         motors['rightMotor'] = {'channel':0, 'inverted': False, 'type':'CANTalon', 'pid':pid}
         motors['rightFollower']  = {'channel':3, 'inverted':False, 'type':'CANTalonFollower', 'masterChannel':0,'talonPid':True}
 
+        for motor in motors:
+            motors[motor]['currentLimits'] = currentLimits
         
         self.driveMotors = motors
         motors={}
-        motors['lifterMotor'] = {'channel':4, 'inverted': False, 'type':'CANTalon'}
-        motors['lifterFollower']  = {'channel':5, 'inverted':False, 'type':'CANTalonFollower', 'masterChannel':4, 'talonPid':False}
-
+        currentLimits = {'absMax':100, 'absMaxTimeMs':100, 'maxNominal':40 }
+        motors['lifterMotor'] = {'channel':4, 'inverted': False, 'type':'CANTalon', 'currentLimits':currentLimits}
+        currentLimits = {'absMax':50, 'absMaxTimeMs':100, 'maxNominal':20 }
+        motors['lifterFollower']  = {'channel':5, 'inverted':False, 'type':'CANTalonFollower', 'masterChannel':4, 'talonPid':False, 'currentLimits':currentLimits}
+        motors['lifterFollower2']  = {'channel':6, 'inverted':False, 'type':'CANTalonFollower', 'masterChannel':4, 'talonPid':False, 'currentLimits':currentLimits}
         self.lifterMotors=motors
         #add shooter motors to shooter.Motors
         
@@ -40,17 +47,19 @@ class ControllerMap():
         driveController['controllerId'] = 0
         driveController['xAxis'] = 0
         driveController['yAxis'] = 1
+        driveController['voltRumble'] = 8
         
-        
-        driveController['zAxis'] = 4
-        driveController['twistAxis'] = 5
-        driveController['throttleAxis'] = 3
-        driveController['loaderToggleButton']= 1
+        auxController={}
+        auxController['controllerId']=1
+        auxController['loaderToggleButton']= 1
+        driveController['voltRumble'] = 8
+        #auxController['lifterDownAxis']= 4
+        #auxController['lifterUpAxis']=2
 
-        driveController['lifterDownAxis']= 4
-        driveController['lifterUpAxis']=2
-
+        auxController['lifterDownAxis']= 3
+        auxController['lifterUpAxis']=2
         self.driveController = driveController
+        self.auxController = auxController
         
 class Pneumatics():
     def __init__(self):
