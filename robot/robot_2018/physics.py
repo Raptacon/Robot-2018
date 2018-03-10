@@ -38,7 +38,7 @@ class PhysicsEngine(object):
             l_motor = -hal_data['CAN'][1]['value']
             r_motor = -hal_data['CAN'][0]['value']
             
-            print(hal_data['CAN'])
+            #print(hal_data['CAN'])
             
             speed,rot = drivetrains.two_motor_drivetrain(l_motor,r_motor)
             self.physics_controller.drive(speed,rot, tm_diff)

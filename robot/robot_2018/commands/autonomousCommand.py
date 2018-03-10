@@ -50,9 +50,10 @@ class AutonomousProgram(CommandGroup):
         self.addSequential(LoaderToggle())
         self.addSequential(WaitCommand(0.5))
         self.addSequential(LifterCommandTimed(0.5, timeoutInSeconds = 3))
-        self.addSequential(LifterCommandTimed(0.25, timeoutInSeconds = 1))
+        self.addSequential(MoveRobot(.5,.5,timeoutInSeconds = 3))
+       # self.addSequential(LifterCommandTimed(0.25, timeoutInSeconds = 1))
         self.addParallel(LifterCommandTimed(0.25, timeoutInSeconds = 10))
-        self.addParallel(MoveRobot(.5,0, timeoutInSeconds=2.75))
+        self.addSequential(MoveRobot(-.5,-.5, timeoutInSeconds=2.75))
         
         #AND lift lifter
         

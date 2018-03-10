@@ -6,6 +6,7 @@ from wpilib.drive import DifferentialDrive
 #from wpilib.drive.mechanumDrive import MecanumDrive
 import commands
 
+import time
 
 class DriveTrain(Subsystem):
     def __init__(self):
@@ -20,7 +21,24 @@ class DriveTrain(Subsystem):
         self.motors = motors
         self.drive = DifferentialDrive(motors['leftMotor'],motors['rightMotor'])
         self.drive.setSafetyEnabled(False)
+        self.minSpeedChange = 0.001
+        self.timeRate = 0.2
+        
+        self.desired = {}
+        self.desired['left'] = 0
+        self.desired['right'] = 0
+        self.current = {}
+        self.current['left'] = 0
+        self.current['right'] = 0
+        
+        self.lastUpdateTime = time.time()
+        self.deadband = 0.1
 
+    def setDeadband(self,deadband):
+        self.drive.deadband = deadband
+        
+        
+    
     def move (self,spd,rot):
         #print("Spd" ,spd, "rot", rot)
         self.drive.arcadeDrive(spd,rot,True)
@@ -31,7 +49,11 @@ class DriveTrain(Subsystem):
         self.setDefaultCommand(commands.driveControlled.DriveControlled())
         
         
+    def moveTank (self, left, right):
         
+        self.drive.tankDrive(left,right,True)
+
+          
         
 
 

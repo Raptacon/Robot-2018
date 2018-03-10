@@ -21,7 +21,7 @@ from wpilib import Encoder
 #from commands import autonomous
 #from commands import followjoystick
 
-
+ 
 
 
 class MyRobot(commandbased.CommandBasedRobot):
@@ -49,7 +49,7 @@ class MyRobot(commandbased.CommandBasedRobot):
         #make robot avaiable to commands
         wpilib.CameraServer.launch('vision.py:main')
         self.smartDashboard.putString('field position' ,"Enter L, R, or C,N")
-        
+       # self.Encoder = Encoder(0,1)
         
         
     def teleopInit(self):
@@ -71,7 +71,20 @@ class MyRobot(commandbased.CommandBasedRobot):
         if self.startingFieldPosition==self.kNothing:
             print("No field position set. Aborting")
             return 
+        
+        
+        #self.Encoder.setMaxPeriod(.1)
+        #self.Encoder.setMinRate(10)
+        #self.Encoder.setDistancePerPulse(5)
+        #self.Encoder.setReverseDirection(True)
+        #self.Encoder.getDistance()
+        
+        #self.Encoder.getRawAxis()
+        
+        
         #todo change RRR to from fms, maybe parse it first
+        #self.timerReset()
+        #self.timerStart()
         self.autonomousProgram = commands.autonomousCommand.AutonomousProgram(self.startingFieldPosition)
         self.autonomousProgram.start()
     
@@ -94,7 +107,7 @@ class MyRobot(commandbased.CommandBasedRobot):
         self.auxController=wpilib.Joystick(auxControllerMap['controllerId'])
         self.driveController.setXChannel(driveController['xAxis'])
         self.driveController.setYChannel(driveController['yAxis'])
-     #   self.driveController.setZChannel(driveController['zAxis'])
+        self.driveController.setZChannel(driveController['zAxis'])
      #   self.driveController.setTwistChannel(driveController['twistAxis'])
      #  self.driveController.setThrottleChannel(driveController['throttleAxis'])
         

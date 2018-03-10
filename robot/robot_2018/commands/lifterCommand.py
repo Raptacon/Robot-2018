@@ -31,13 +31,13 @@ class LifterCommand(command.Command):
         
         if (upSpeed>=deadZone and downSpeed>=deadZone):
             #print("Dead")
-            return 0 
+            return 0.2
         if (upSpeed>=deadZone):
             #print("up", upSpeed*spdscale)
             return upSpeed*spdscale
         if (downSpeed>=deadZone):
             #print("down", -downSpeed*spdscale)
-            return -downSpeed*spdscale
+            return -downSpeed*spdscale*.25
         
         return 0 
 

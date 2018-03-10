@@ -25,7 +25,10 @@ def createMotor(motorDescp):
         motor.setInverted(motorDescp['inverted'])
         
         motor.set(ctre.wpi_talonsrx.ControlMode.Follower, motorDescp['masterChannel'])
-        
+    else:
+        print("Unknown Motor")
+    
+    
     if 'currentLimits' in motorDescp:
         currentLimits = motorDescp['currentLimits']
         absMax = currentLimits['absMax']
@@ -35,10 +38,9 @@ def createMotor(motorDescp):
         motor.configPeakCurrentDuration(absMaxTimeMs,10)
         motor.configContinuousCurrentLimit(nominalMaxCurrent,10)
         motor.enableCurrentLimit(True)
-        
-    else:
-        print("Unknown Motor")
 
+    if 'rampRate' in motorDescp:
+        motor.configOpenLoopRamp(motorDescp['rampRate'],10)    
 
 #motor=map.CAN.driveMotors[name]
 #            motors[name]=ctre.wpi_talonsrx.WPI_TalonSRX(motor['channel'])

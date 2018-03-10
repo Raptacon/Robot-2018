@@ -16,21 +16,21 @@ class MoveRobot(Command):
     stops.
     '''
 
-    def __init__(self, magnitude, rotation, timeoutInSeconds):
-        super().__init__('Set Speed %d and rotation %d' % (magnitude,rotation), timeoutInSeconds)
+    def __init__(self, left,right, timeoutInSeconds):
+        super().__init__('Set Speed %d and rotation %d' % (left,right), timeoutInSeconds)
 
-        self.magnitude = magnitude
-        self.rotation = rotation
+        self.left=left
+        self.right=right
         self.requires(Command.getRobot().drivetrain)
         print("Created timed command")
     def execute(self):
 
         #it seems like rot / magnitude is reversed, is this a bug in the robot lib sim?
-        Command.getRobot().drivetrain.move(self.rotation, -self.magnitude)
+        Command.getRobot().drivetrain.moveTank(self.rotation, -self.magnitude)
 
     def end(self):
         #print("done")
-        Command.getRobot().drivetrain.move(0,0)
+        Command.getRobot().drivetrain.moveTank(0,0)
         
     def isFinished(self):
         """Ends command when timed out."""

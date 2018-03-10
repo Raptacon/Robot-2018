@@ -8,35 +8,35 @@ class DriveControlled(command.Command):
         super().__init__('DriveControlled')
         
         self.requires(self.getRobot().drivetrain)
-        self.getRobot().smartDashboard.putNumber("Joystick-Yscale", -1)
-        self.getRobot().smartDashboard.putNumber("Joystick-rotscale", 1)
+        self.getRobot().smartDashboard.putNumber("Joystick-DriveScale", 1.0)
+      
         self.getRobot().smartDashboard.putNumber("deadZone", 0.1)
     def execute (self):
         controller = self.getRobot().driveController
-        rotscale=self.getRobot().smartDashboard.getNumber("Joystick-Xscale", 1)
-        spdscale=self.getRobot().smartDashboard.getNumber("Joystick-Yscale", -1)
+        rotscale=self.getRobot().smartDashboard.getNumber("Joystick-Xscale", 1.0)
+        spdscale=self.getRobot().smartDashboard.getNumber("Joystick-Yscale", 1.0)
        # rotscale=self.getRobot().smartDashboard.getNumber("Joystick-Zscale", 1)
         deadZone=self.getRobot().smartDashboard.getNumber("deadZone", 0.1) 
         #print("output: x %0.02f, y %0.02f, rot %0.02f" % (x,y,rot))
-        
+        self.getRobot().drivetrain.setDeadband(deadZone)
         '''Joystick Values on NetworkTables'''
         
         rotspeed=controller.getY()
-        if (abs(controller.getY())<=deadZone):
-            rotspeed=0
+        #if (abs(controller.getY())<=deadZone):
+        #    rotspeed=0
         spdspeed=controller.getX()
-        if (abs(controller.getX())<=deadZone):
-            spdspeed=0
+        #if (abs(controller.getX())<=deadZone):
+        #    spdspeed=0
         #rotspeed=controller.getZ()
        # if (abs(controller.getX())<deadZone):
          #   rotspeed=0
         
-        rot=rotscale*rotspeed
-        spd=spdscale*spdspeed
+        left=rotscale*rotspeed
+        right=spdscale*spdspeed
        # rot=rotscale*rotspeed
-        self.getRobot().drivetrain.move(spd,rot)
-        self.getRobot().smartDashboard.putNumber("Joystick-rot", rot)
-        self.getRobot().smartDashboard.putNumber("Joystick-Y", spd)
+        self.getRobot().drivetrain.moveTank(left,right)
+        self.getRobot().smartDashboard.putNumber("Joystick-left", left)
+        self.getRobot().smartDashboard.putNumber("Joystick-right", right)
  
         #create motors here
         
