@@ -32,8 +32,7 @@ class AutonomousProgram(CommandGroup):
             self.createRightCommands()
         
     def createCenterCommands(self):
-        self.addParallel(MoveRobot(.5,0, timeoutInSeconds=2.75))
-        
+        self.addParallel(MoveRobot(-.5,.5, timeoutInSeconds=2.75))
         
     def createLeftCommands(self):
         self.createSideCommands()
@@ -42,18 +41,19 @@ class AutonomousProgram(CommandGroup):
 
     def createRightCommands(self):
         self.createSideCommands()
-        
         #if robot on side as field, maybe raise lifter and drop box?        
         
     def createSideCommands(self):
         #move robot
         self.addSequential(LoaderToggle())
         self.addSequential(WaitCommand(0.5))
-        self.addSequential(LifterCommandTimed(0.5, timeoutInSeconds = 3))
-        self.addSequential(MoveRobot(.5,.5,timeoutInSeconds = 3))
-       # self.addSequential(LifterCommandTimed(0.25, timeoutInSeconds = 1))
-        self.addParallel(LifterCommandTimed(0.25, timeoutInSeconds = 10))
-        self.addSequential(MoveRobot(-.5,-.5, timeoutInSeconds=2.75))
+        self.addParallel(LifterCommandTimed(0.4, timeoutInSeconds = 5))
+        self.addSequential(MoveRobot(-.5,.5,timeoutInSeconds = 1.95))
+        self.addSequential(LifterCommandTimed(0.25, timeoutInSeconds = 1))
+        self.addSequential(LoaderToggle())
+        #self.addParallel(LifterCommandTimed(0.27, timeoutInSeconds = 4))
+        self.addSequential(WaitCommand(1))
+        self.addSequential(MoveRobot(.5,-.5, timeoutInSeconds=1))
         
         #AND lift lifter
         

@@ -79,12 +79,22 @@ class MyRobot(commandbased.CommandBasedRobot):
         #self.Encoder.setReverseDirection(True)
         #self.Encoder.getDistance()
         
+        """self.Encoder.reset()
+        while (self.Encoder.get() < value):
+          drive
+          delay"""
+        
+        
+        
+        
+        
+        
+        
         #self.Encoder.getRawAxis()
         
         
         #todo change RRR to from fms, maybe parse it first
-        #self.timerReset()
-        #self.timerStart()
+        
         self.autonomousProgram = commands.autonomousCommand.AutonomousProgram(self.startingFieldPosition)
         self.autonomousProgram.start()
     
