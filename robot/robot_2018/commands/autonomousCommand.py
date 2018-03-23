@@ -45,15 +45,22 @@ class AutonomousProgram(CommandGroup):
         
     def createSideCommands(self):
         #move robot
-        self.addSequential(LoaderToggle())
-        self.addSequential(WaitCommand(0.5))
-        self.addParallel(LifterCommandTimed(0.4, timeoutInSeconds = 5))
-        self.addSequential(MoveRobot(-.5,.5,timeoutInSeconds = 1.95))
-        self.addSequential(LifterCommandTimed(0.25, timeoutInSeconds = 1))
-        self.addSequential(LoaderToggle())
-        #self.addParallel(LifterCommandTimed(0.27, timeoutInSeconds = 4))
+              
+        self.addSequential(LifterCommandTimed(.4, timeoutInSeconds=.5))
         self.addSequential(WaitCommand(1))
+        self.addSequential(MoveRobot(-.5,.5, timeoutInSeconds=1))
         self.addSequential(MoveRobot(.5,-.5, timeoutInSeconds=1))
+        self.addSequential(MoveRobot(-.5,.5, timeoutInSeconds=1))
+        self.addSequential(LoaderToggle())
+        self.addSequential(MoveRobot(.5,-.5, timeoutInSeconds=1.4))
+        self.addSequential(WaitCommand(0.5))
+        self.addSequential(LifterCommandTimed(0.4, timeoutInSeconds = 5))
+        self.addParallel(MoveRobot(-.5,.5,timeoutInSeconds = 1.95))
+        self.addSequential(LoaderToggle())
+        self.addSequential(LifterCommandTimed(0.3, timeoutInSeconds = 1))
+        self.addSequential(LifterCommandTimed(0.27, timeoutInSeconds = 4))
+        #self.addSequential(WaitCommand(1))
+        self.addParallel(MoveRobot(.5,-.5, timeoutInSeconds=1))
         
         #AND lift lifter
         
