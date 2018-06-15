@@ -49,6 +49,8 @@ class MyRobot(commandbased.CommandBasedRobot):
         #make robot avaiable to commands
         wpilib.CameraServer.launch('vision.py:main')
         self.smartDashboard.putString('field position' ,"Enter L, R, or C,N")
+        
+        self.loader.setLoader(self.loader.State.kOpen)
        # self.Encoder = Encoder(0,1)
         
         
@@ -115,11 +117,9 @@ class MyRobot(commandbased.CommandBasedRobot):
         auxControllerMap = controllerMap.auxController
         self.driveController=wpilib.Joystick(driveController['controllerId'])
         self.auxController=wpilib.Joystick(auxControllerMap['controllerId'])
-        self.driveController.setXChannel(driveController['xAxis'])
-        self.driveController.setYChannel(driveController['yAxis'])
-        self.driveController.setZChannel(driveController['zAxis'])
-     #   self.driveController.setTwistChannel(driveController['twistAxis'])
-     #  self.driveController.setThrottleChannel(driveController['throttleAxis'])
+        #self.driveController.setXChannel(driveController['rightTread'])
+        #self.driveController.setYChannel(driveController['leftTread'])
+        
         
     def createNetworkTables(self):
         NetworkTables.initialize(server = "roborio-3200-frc.local")

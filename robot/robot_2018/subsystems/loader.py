@@ -28,14 +28,14 @@ class Loader(Subsystem):
         self.setLoader(self.State.kOpen)
         print("Starting testLoader")
         self.toggleLoader()
-        assert(self.loaderSolenoid.get() == DoubleSolenoid.Value.kReverse)
+        assert(self.loaderSolenoid.get() == DoubleSolenoid.Value.kForward)
         wpilib.Timer.delay(5)
         self.toggleLoader()
-        assert(self.loaderSolenoid.get() == DoubleSolenoid.Value.kForward)
+        assert(self.loaderSolenoid.get() == DoubleSolenoid.Value.kReverse)
         wpilib.Timer.delay(5)
         print("Finish testLoader")
         self.toggleLoader()
-        assert(self.loaderSolenoid.get() == DoubleSolenoid.Value.kReverse)
+        assert(self.loaderSolenoid.get() == DoubleSolenoid.Value.kForward)
         wpilib.Timer.delay(2)
         print ("Finished testLoader now")
         
@@ -45,7 +45,7 @@ class Loader(Subsystem):
         if state == self.State.kOpen:
             self.loaderSolenoid.set(DoubleSolenoid.Value.kForward) 
         elif state ==self.State.kClose:
-            self.loaderSolenoid.set(DoubleSolenoid.Value.kReverse) 
+            self.loaderSolenoid.set(DoubleSolenoid.Value.kReverse ) 
         else: 
             raise ValueError("Invalid Loader State %s" %value)
         self.currentState=state

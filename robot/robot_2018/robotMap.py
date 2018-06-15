@@ -4,6 +4,8 @@ import wpilib.buttons
 import ctre
 from ctre import WPI_TalonSRX
 
+import hal
+
 class RobotMap():
     def __init__(self):
         self.CAN = CANMap()
@@ -47,9 +49,11 @@ class ControllerMap():
     def __init__(self):
         driveController = {}
         driveController['controllerId'] = 0
-        driveController['xAxis'] = 1
-        driveController['yAxis'] = 5 #3 on sim 5 on frc
-        driveController['zAxis'] = 2
+        driveController['leftTread'] = 1
+        if hal.isSimulation():
+            driveController['rightTread'] = 3 #3 on sim 5 on frc
+        else:
+            driveController['rightTread'] = 5 #3 on sim 5 on frc
 
         driveController['voltRumble'] = 8
         

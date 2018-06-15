@@ -12,6 +12,7 @@ from commands.moveRobot import MoveRobot
 from commands.lifterCommand import LifterCommandTimed
 from commands.loaderCommand import LoaderToggle
 
+
 class AutonomousProgram(CommandGroup):
     '''
     A simple program that spins the motor for two seconds, pauses for a second,
@@ -21,6 +22,7 @@ class AutonomousProgram(CommandGroup):
     def __init__(self, robotLocation):
         super().__init__('Autonomous Program')
         self.robotLocation = robotLocation
+        self.loaderState = self.getRobot().loader.State
         if self.getRobot().kCenter == robotLocation:
             print("Center Auto")
             self.createCenterCommands()
@@ -48,17 +50,27 @@ class AutonomousProgram(CommandGroup):
               
         self.addSequential(LifterCommandTimed(.4, timeoutInSeconds=.5))
         self.addSequential(WaitCommand(1))
+        self.addSequential(LoaderToggle(self.loaderState.kClose))
+
         self.addSequential(MoveRobot(-.5,.5, timeoutInSeconds=1))
         self.addSequential(MoveRobot(.5,-.5, timeoutInSeconds=1))
-        self.addSequential(MoveRobot(-.5,.5, timeoutInSeconds=1))
-        self.addSequential(LoaderToggle())
-        self.addSequential(MoveRobot(.5,-.5, timeoutInSeconds=1.4))
+        self.addSequential(MoveRobot(-.5,.5, timeoutInSeconds=1.2))
+        self.addParallel(LoaderToggle(self.loaderState.kOpen))
+
         self.addSequential(WaitCommand(0.5))
-        self.addSequential(LifterCommandTimed(0.4, timeoutInSeconds = 5))
-        self.addParallel(MoveRobot(-.5,.5,timeoutInSeconds = 1.95))
-        self.addSequential(LoaderToggle())
+
+        self.addSequential(LoaderToggle(self.loaderState.kClose))
+        self.addSequential(MoveRobot(.5,-.5, timeoutInSeconds=1.2))
+        self.addSequential(WaitCommand(2))
+        self.addSequential(LifterCommandTimed(0.4, timeoutInSeconds = 3))
+        self.addParallel(MoveRobot(-.5,.5,timeoutInSeconds = 2.6))
+        self.addSequential(WaitCommand(3))
+        
+        #drop box if needed
+        self.createDropBoxCommands()
+        #self.addSequential(LoaderToggle())
         self.addSequential(LifterCommandTimed(0.3, timeoutInSeconds = 1))
-        self.addSequential(LifterCommandTimed(0.27, timeoutInSeconds = 4))
+        self.addSequential(LifterCommandTimed(0.27, timeoutInSeconds = 2))
         #self.addSequential(WaitCommand(1))
         self.addParallel(MoveRobot(.5,-.5, timeoutInSeconds=1))
         
@@ -68,9 +80,9 @@ class AutonomousProgram(CommandGroup):
         #elf.addSequential(MoveRobot(0,0, timeoutInSeconds = 0))
         #self.addSequential(LifterCommandTimed(0, timeoutInSeconds = 0))
         #let robot stablize
-        self.addSequential(WaitCommand(5.0))
+        #self.addSequential(WaitCommand(5.0))
         
-        self.createDropBoxCommands()
+        
         
         
     def createDropBoxCommands(self):
